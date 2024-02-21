@@ -1,20 +1,23 @@
 import express from 'express';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer'; 
 
 const app = express();
-const PORT = process.env.PORT || 3051;
+const PORT = process.env.PORT || 3000;
 
 async function searchBooks(query) {
     let browser = null;
     try {
+        // Use the bundled Chromium in Puppeteer
         browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            headless: true,
+            headless: true, // Ensuring Puppeteer runs headless on Render
+            executablePath: puppeteer.executablePath(), // Use the executablePath of bundled Chromium
         });
         const page = await browser.newPage();
         const searchUrl = `https://www.pdfdrive.com/search?q=${encodeURIComponent(query)}&pagecount=&pubyear=&searchin=&em=`;
         await page.goto(searchUrl, { waitUntil: 'networkidle2' });
-        // Use Puppeteer to evaluate page and scrape data
+
+        // Scrape the data
         const books = await page.evaluate(() => {
             const books = [];
             document.querySelectorAll('.file-left').forEach(elem => {
@@ -46,6 +49,7 @@ async function getDirectPDFDownloadLink(bookPageUrl) {
         browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             headless: true,
+            executablePath: puppeteer.executablePath(),
         });
         const page = await browser.newPage();
         await page.goto(bookPageUrl, { waitUntil: 'networkidle2' });
