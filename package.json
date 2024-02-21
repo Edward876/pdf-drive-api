@@ -1,0 +1,17 @@
+{
+    "name": "pdf-drive-api",
+    "version": "0.0.1",
+    "main": "App.js",
+    "scripts": {
+        "start": "node App.js"
+    },
+    "author": {
+        "name": "Supratim Saha"
+    },
+    "type": "module",
+    "dependencies": {
+        "axios": "1.6.7",
+        "cheerio": "0.22.0",
+        "puppeteer": "^22.1.0"
+    }
+}
