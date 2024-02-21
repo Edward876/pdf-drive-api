@@ -3,7 +3,8 @@
     "version": "0.0.1",
     "main": "App.js",
     "scripts": {
-        "start": "node App.js"
+        "start": "node App.js",
+        "build": "echo \"No build step required\""
     },
     "author": {
         "name": "Supratim Saha"
