@@ -10,7 +10,7 @@ async function searchBooks(query) {
     try {
         // Use the bundled Chromium in Puppeteer
         browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--single-process', '--no-zygote'],
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
             headless: true, // Ensuring Puppeteer runs headless on Render
             executablePath: process.env.NODE_ENV == "production" ? process.env.PUPPETEE_EXECUTABLE_PATH : puppeteer.executablePath(), // Use the executablePath of bundled Chromium
         });
