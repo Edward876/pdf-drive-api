@@ -1,6 +1,7 @@
 import express from 'express';
 import puppeteer from 'puppeteer'; 
-require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
