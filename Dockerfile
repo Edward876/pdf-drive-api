@@ -1,13 +1,16 @@
-FROM  ghcr.io/puppeteer/puppeteer:22.1.0
+FROM ghcr.io/puppeteer/puppeteer:22.1.0
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEE_EXECUTABLE_PATH=/user/bin/google-chrome-stable
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
-WORKDIR /user/src/app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm i
-COPY  . .
+# Install dependencies
+RUN npm ci
+
+# Copy the rest of the application
+COPY . .
 
 CMD ["node", "App.js"]
