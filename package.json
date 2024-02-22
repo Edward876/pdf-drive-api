@@ -4,6 +4,7 @@
     "main": "App.js",
     "scripts": {
         "start": "node App.js",
+        "build": "echo \"No build step required\""
     },
     "author": {
         "name": "Supratim Saha"
