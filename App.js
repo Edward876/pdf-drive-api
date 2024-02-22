@@ -1,5 +1,15 @@
 import express from 'express';
 import puppeteer from 'puppeteer'; 
+import { exec } from 'child_process';
+
+exec('npx puppeteer browsers install chrome', (error, stdout, stderr) => {
+    if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
