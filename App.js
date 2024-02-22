@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer';
 import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3050;
 
 async function searchBooks(query) {
     let browser = null;
