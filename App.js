@@ -45,34 +45,27 @@ async function searchBooks(query) {
 }
 
 async function getDirectPDFDownloadLink(bookPageUrl) {
-    let browser = null;
-    try {
-        browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            headless: true,
-            executablePath: puppeteer.executablePath(),
-        });
-        const page = await browser.newPage();
-        await page.goto(bookPageUrl, { waitUntil: 'networkidle2' });
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(bookPageUrl, { waitUntil: 'networkidle2' });
 
-        // Use Puppeteer to evaluate page and get the download link
-        const downloadLink = await page.evaluate(() => {
-            const initialDownloadSelector = '#download-button > a';
-            const finalDownloadSelector = '.btn-group a[type="button"]';
-            const initialDownloadLink = document.querySelector(initialDownloadSelector)?.href;
-            const finalDownloadLink = document.querySelector(finalDownloadSelector)?.href;
-            return { initialDownloadLink, finalDownloadLink };
-        });
+    // Find the initial download link and click it
+    const initialDownloadSelector = '#download-button > a';
+    await page.waitForSelector(initialDownloadSelector, { visible: true });
+    const initialDownloadLink = await page.$eval(initialDownloadSelector, element => element.href);
 
-        return downloadLink;
-    } catch (error) {
-        console.error('Error fetching download link:', error);
-        return { error: 'Failed to fetch download link' };
-    } finally {
-        if (browser) await browser.close();
-    }
+    // Navigate to the initial download link page
+    await page.goto(initialDownloadLink, { waitUntil: 'networkidle2' });
+
+    // Wait for the final download button to appear and get its link
+    const finalDownloadSelector = '.btn-group a[type="button"]';
+    await page.waitForSelector(finalDownloadSelector, { visible: true });
+    const finalDownloadLink = await page.$eval(finalDownloadSelector, element => element.href);
+
+    return {finalDownloadLink}
+
+    await browser.close();
 }
-
 app.get("/searchBooks", async (req, res) => {
     const query = req.query.q;
     if (!query) {
