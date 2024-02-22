@@ -7,7 +7,7 @@ WORKDIR /user/src/app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN npm i
 COPY  . .
 
 CMD ["node", "App.js"]
