@@ -1,6 +1,6 @@
 import express from 'express';
 import puppeteer from 'puppeteer'; 
-
+require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -9,9 +9,9 @@ async function searchBooks(query) {
     try {
         // Use the bundled Chromium in Puppeteer
         browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--single-process', '--no-zygote'],
             headless: true, // Ensuring Puppeteer runs headless on Render
-            executablePath: puppeteer.executablePath(), // Use the executablePath of bundled Chromium
+            executablePath: process.env.NODE_ENV == "production" ? process.env.PUPPETEE_EXECUTABLE_PATH : puppeteer.executablePath(), // Use the executablePath of bundled Chromium
         });
         const page = await browser.newPage();
         const searchUrl = `https://www.pdfdrive.com/search?q=${encodeURIComponent(query)}&pagecount=&pubyear=&searchin=&em=`;
